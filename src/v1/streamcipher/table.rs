@@ -24,8 +24,8 @@ impl Table {
 
         let mut table = [0u64; Self::TABLE_SIZE];
 
-        for i in 0..table.len() {
-            table[i] = i as u64;
+        for (i, entry) in table.iter_mut().enumerate() {
+            *entry = i as u64;
         }
 
         for i in 1..1024 {
