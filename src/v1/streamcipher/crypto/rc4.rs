@@ -50,7 +50,7 @@ impl Rc4 {
         let mut index2 = 0u8;
         for counter in 0..256 {
             index2 = key[index1 as usize].wrapping_add(state[counter]).wrapping_add(index2);
-            state.swap(counter as usize, index2 as usize);
+            state.swap(counter, index2 as usize);
             index1 = index1.wrapping_add(1) % key_len;
         }
 
