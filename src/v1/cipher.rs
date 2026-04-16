@@ -21,7 +21,7 @@ pub fn openssl_bytes_to_key(password: &[u8], key: &mut [u8]) {
     while offset < key_len {
         let mut m = Md5::new();
         if let Some(digest) = last_digest {
-            m.update(&digest);
+            m.update(digest);
         }
 
         m.update(password);
@@ -89,7 +89,7 @@ impl Cipher {
             CipherCategory::Aead => {
                 use cfg_if::cfg_if;
 
-                const SUBKEY_INFO: &'static [u8] = b"ss-subkey";
+                const SUBKEY_INFO: &[u8] = b"ss-subkey";
                 const MAX_KEY_LEN: usize = 64;
 
                 let ikm = key;
