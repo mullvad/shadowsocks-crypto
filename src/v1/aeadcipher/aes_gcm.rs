@@ -45,12 +45,12 @@ cfg_if! {
     }
 }
 
-pub struct Aes128Gcm(CryptoAes128Gcm);
+pub struct Aes128Gcm(Box<CryptoAes128Gcm>);
 
 impl Aes128Gcm {
     pub fn new(key: &[u8]) -> Aes128Gcm {
         let key = Key::<CryptoAes128Gcm>::from_slice(key);
-        Aes128Gcm(CryptoAes128Gcm::new(key))
+        Aes128Gcm(Box::new(CryptoAes128Gcm::new(key)))
     }
 
     pub fn key_size() -> usize {
@@ -96,12 +96,12 @@ impl Aes128Gcm {
     }
 }
 
-pub struct Aes256Gcm(CryptoAes256Gcm);
+pub struct Aes256Gcm(Box<CryptoAes256Gcm>);
 
 impl Aes256Gcm {
     pub fn new(key: &[u8]) -> Aes256Gcm {
         let key = Key::<CryptoAes256Gcm>::from_slice(key);
-        Aes256Gcm(CryptoAes256Gcm::new(key))
+        Aes256Gcm(Box::new(CryptoAes256Gcm::new(key)))
     }
 
     pub fn key_size() -> usize {
