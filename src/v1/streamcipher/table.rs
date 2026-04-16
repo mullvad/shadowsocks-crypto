@@ -29,7 +29,7 @@ impl Table {
         }
 
         for i in 1..1024 {
-            table.sort_by(|x, y| (a % (*x + i)).cmp(&(a % (*y + i))))
+            table.sort_by_key(|x| a % (*x + i))
         }
 
         // EK
