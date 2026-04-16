@@ -128,7 +128,7 @@ impl Sm4Gcm {
     /// > If len(IV)=96, then J0 = IV || 0{31} || 1.
     /// > If len(IV) ≠ 96, then let s = 128 ⎡len(IV)/128⎤-len(IV), and
     /// >     J0=GHASH(IV||0s+64||[len(IV)]64).
-    fn init_ctr(&self, nonce: &Nonce) -> (Ctr32BE, Block) {
+    fn init_ctr(&self, nonce: &Nonce) -> (Ctr32BE<'_>, Block) {
         let j0 = if <Self as AeadCore>::NonceSize::to_usize() == 12 {
             let mut block = ghash::Block::default();
             block[..12].copy_from_slice(nonce);
