@@ -48,9 +48,9 @@ ring-compat = { version = "0.8", default-features = false, features = [
     "alloc",
 ], optional = true }
 aws-lc-rs = { version = "1.16", optional = true }
-md-5 = { version = "0.10", optional = true }
-hkdf = { version = "0.12", optional = true }
-sha1 = { version = "0.10", optional = true }
+md-5 = { version = "0.11", optional = true }
+hkdf = { version = "0.13", optional = true }
+sha1 = { version = "0.11", optional = true }
 blake3 = { version = "1.3", optional = true }
 chacha20 = { version = "0.9", features = [], optional = true }
 aes = { version = "0.8", optional = true }
