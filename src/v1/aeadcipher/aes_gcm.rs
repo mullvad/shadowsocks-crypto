@@ -1,7 +1,7 @@
 use cfg_if::cfg_if;
 
 cfg_if! {
-    if #[cfg(feature = "faster-crypto")] {
+    if #[cfg(feature = "aws-lc")] {
         use aws_lc_rs::aead::{Aad, Algorithm, LessSafeKey, Nonce, UnboundKey, AES_128_GCM, AES_256_GCM};
 
         struct AeadKey(LessSafeKey);
@@ -64,6 +64,39 @@ cfg_if! {
 
         aead_cipher!(Aes128Gcm, AES_128_GCM);
         aead_cipher!(Aes256Gcm, AES_256_GCM);
+    } else if #[cfg(feature = "ring")] {
+        use std::convert::{AsMut, AsRef};
+
+        pub use ring_compat::aead::{Aes128Gcm as CryptoAes128Gcm, Aes256Gcm as CryptoAes256Gcm};
+        use ring_compat::{
+            aead::{AeadCore, AeadInPlace, Buffer, Error as AeadError, KeySizeUser, KeyInit},
+            generic_array::{typenum::Unsigned, GenericArray},
+        };
+
+        type Key<B> = GenericArray<u8, <B as KeySizeUser>::KeySize>;
+        type Nonce<NonceSize> = GenericArray<u8, NonceSize>;
+
+        struct SliceBuffer<'a>(&'a mut [u8]);
+
+        impl AsRef<[u8]> for SliceBuffer<'_> {
+            fn as_ref(&self) -> &[u8] {
+                self.0
+            }
+        }
+
+        impl AsMut<[u8]> for SliceBuffer<'_> {
+            fn as_mut(&mut self) -> &mut [u8] {
+                self.0
+            }
+        }
+
+        impl Buffer for SliceBuffer<'_> {
+            fn extend_from_slice(&mut self, _other: &[u8]) -> Result<(), AeadError> {
+                unimplemented!("not used in decrypt_in_place")
+            }
+
+            fn truncate(&mut self, _len: usize) {}
+        }
     } else {
         use aes_gcm::{
             aead::{generic_array::typenum::Unsigned, AeadCore, AeadInPlace, KeySizeUser, KeyInit},

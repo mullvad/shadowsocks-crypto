@@ -2,7 +2,7 @@
 
 /// Generate random bytes into `iv_or_salt`
 pub fn random_iv_or_salt(iv_or_salt: &mut [u8]) {
-    use rand::Rng;
+    use rand::RngExt;
 
     // Gen IV or Gen Salt by KEY-LEN
     if iv_or_salt.is_empty() {
